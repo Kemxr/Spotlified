@@ -2,18 +2,20 @@ import "./modules/artist-cover";
 import "./modules/artist-songs";
 import data from "./modules/api_artists";
 import routeur from "./modules/routeur";
-import { togglePlayPause, changeIcone, nextSong, previousSong} from "./modules/songs_helper";
+import { togglePlayPause, changeIcone, nextSong, previousSong, clickOnBarProgression, changeDuration, updateTime} from "./modules/songs_helper";
 
-
+const audioPlayer = document.querySelector("#audio-player");
+const playerPlay = document.querySelector("#player-control-play");
+const playerNext = document.querySelector("#player-control-next");
+const playerPrev = document.querySelector("#player-control-previous");
+const playerProgress = document.querySelector("#player-progress-bar");
 
 const sectionList = document.querySelector("#list-section .list");
 const sectionArtistTitle = document.querySelector("#list-section h4");
 const artistList = document.querySelector("artist-list");
 //Element composer pour pouvoir faire des trucs précis à chaque fois qu'on ajoute l'élément au dom
 //Mais pour l'artiste-list, on a pas besoin de ça vu que c'est juste une div
-//
 
-//Tej ce qu'il y a de base
 artistList.innerHTML = " ";
 
 //ARTISTES
@@ -25,12 +27,18 @@ data.forEach(el => {
     artistList.appendChild(artistCover);
 });
 
-//AUDIO
-document.querySelector("#audio-player").addEventListener("play",changeIcone);
-document.querySelector("#audio-player").addEventListener("pause",changeIcone);
-document.querySelector("#player-control-play").addEventListener("click", togglePlayPause);
-document.querySelector("#player-control-next").addEventListener("click", nextSong)
-document.querySelector("#player-control-previous").addEventListener("click", previousSong)
+//PLAYER
+audioPlayer.addEventListener("play",changeIcone);
+audioPlayer.addEventListener("pause",changeIcone);
+playerPlay.addEventListener("click", togglePlayPause);
+playerNext.addEventListener("click", nextSong);
+playerPrev.addEventListener("click", previousSong);
+playerProgress.addEventListener("change", (e) => {
+    clickOnBarProgression(e);
+});
+audioPlayer.addEventListener("durationchange", changeDuration);
+audioPlayer.addEventListener("timeupdate",updateTime);
+
 
 //MUSIQUES
 sectionArtistTitle.innerHTML = " ";

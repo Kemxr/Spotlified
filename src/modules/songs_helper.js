@@ -1,9 +1,22 @@
+import formatTimeStamp from "../lib/formatTimestamp";
+
+const audio = document.querySelector("#audio-player");
+
+const playerThumbnail = document.querySelector("#player-thumbnail-image");
+const playerArtistName = document.querySelector("#player-infos-artist");
+const playerSongTitle = document.querySelector("#player-infos-song-title");
+
+const playerProgress = document.querySelector("#player-progress-bar");
+const playerCurrentTime = document.querySelector("#player-time-current");
+const playerTimeDuration = document.querySelector("#player-time-duration");
+
+const logo = document.querySelector("#logo");
+
 export const displaySongs = async (hash) => {
     const sectionList = document.querySelector("#list-section .list");
     const sectionArtistTitle = document.querySelector("#list-section h4");
     //On fais la requête à l'api pour afficher les musiques
     //On active la liste et on rajoute les musiques
-
     sectionList.innerHTML = " ";
     document.querySelector(`#list-section`).classList.add("active");
 
@@ -16,14 +29,13 @@ export const displaySongs = async (hash) => {
     //Gestion du nom afficher
     sectionArtistTitle.textContent = `Artistes > ${songs[0].artist.name}`;
 
-    //Affichage des musiques (essayer de faire un custom element) => réussi
+    //Affichage des musiques
     songs.forEach(song => {
         let songElement = document.createElement("song-element");
-        const audio = document.querySelector("#audio-player");
         songElement.setAttribute("song_title", song.title);
         songElement.setAttribute("favorite", false);
         songElement.addEventListener("click", () => {
-            playAudio(song, audio, songs);
+            playAudio(song, songs);
             //Change l'affichage
             document.querySelectorAll('section').forEach(section => section.classList.remove("active"));
             document.querySelector(`#player-section`).classList.add("active");
@@ -35,16 +47,19 @@ export const displaySongs = async (hash) => {
 let currentSong = null;
 let currentTableau = null;
 
-const playAudio = (song, audio, songs) => {
+const playAudio = (song, songs) => {
     currentSong = song
     currentTableau = songs
 
+    playerThumbnail.src = song.artist.image_url;
+    playerArtistName.textContent = song.artist.name;
+    playerSongTitle.textContent = song.title;
+    
     audio.src = song.audio_url;
     audio.play();
 }
 
 export const togglePlayPause = () => {
-    const audio = document.querySelector("#audio-player");
     if (audio.paused) {
         audio.play()
     } else {
@@ -53,18 +68,17 @@ export const togglePlayPause = () => {
 }
 
 export const changeIcone = () => {
-    const audio = document.querySelector("#audio-player");
     const playerBtn = document.querySelector("#player-control-play span");
     if (audio.paused) {
         playerBtn.textContent = "play_arrow";
+        logo.classList.remove("animated");
     } else {
         playerBtn.textContent = "pause";
+        logo.classList.add("animated");
     }
 }
 
 export const nextSong = () => {
-    const audio = document.querySelector("#audio-player");
-
     // Trouve l'index actuel
     let actualSong = currentTableau.indexOf(currentSong);
     let nextIndex;
@@ -79,12 +93,10 @@ export const nextSong = () => {
     // Récupère la chanson suivante
     let nextSong = currentTableau[nextIndex];
 
-    playAudio(nextSong, audio, currentTableau);
+    playAudio(nextSong, currentTableau);
 };
 
 export const previousSong = () => {
-    const audio = document.querySelector("#audio-player");
-
     // Trouve l'index actuel
     let actualSong = currentTableau.indexOf(currentSong);
     let previousIndex;
@@ -99,5 +111,20 @@ export const previousSong = () => {
     // Récupère la chanson précédente
     let previousSong = currentTableau[previousIndex];
 
-    playAudio(previousSong, audio, currentTableau);
+    playAudio(previousSong, currentTableau);
 };
+
+//Change la valeur de la progress bar et de l'audio avec notre click
+export const clickOnBarProgression = (e) => {
+    audio.currentTime = e.currentTarget.value;
+}
+
+export const changeDuration = () => {
+    playerProgress.max = audio.duration;
+    playerTimeDuration.textContent = formatTimeStamp(audio.duration);
+}
+
+export const updateTime = () => {
+    playerProgress.value = audio.currentTime;
+    playerCurrentTime.textContent = formatTimeStamp(audio.currentTime);
+}
