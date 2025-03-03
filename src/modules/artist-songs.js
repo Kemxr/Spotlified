@@ -1,3 +1,6 @@
+
+const playEvent = new CustomEvent("play_click");
+
 class SongElement extends HTMLElement {
     static observedAttributes = ['song_title','favorite']
 
@@ -15,8 +18,14 @@ class SongElement extends HTMLElement {
                                         <span class="material-icons">play_arrow</span>
                                     </button>
                                 </div>
-                            </a>
-                            `
+                            </a>`;
+
+        const playButton = this.querySelector(".play-button");
+        playButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            this.dispatchEvent(playEvent);
+        })
+
     }
     connectedCallback() {
         this.render()

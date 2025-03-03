@@ -34,20 +34,21 @@ export const displaySongs = async (hash) => {
         let songElement = document.createElement("song-element");
         songElement.setAttribute("song_title", song.title);
         songElement.setAttribute("favorite", false);
-        songElement.addEventListener("click", () => {
-            playAudio(song, songs);
-            //Change l'affichage
-            document.querySelectorAll('section').forEach(section => section.classList.remove("active"));
-            document.querySelector(`#player-section`).classList.add("active");
-        })
         sectionList.appendChild(songElement);
+        songElement.addEventListener("play_click", (e) => {
+            playAudio(song, songs);
+        })
     })
 }
 
 let currentSong = null;
 let currentTableau = null;
 
-const playAudio = (song, songs) => {
+export const playAudio = (song, songs) => {
+    //Change l'affichage
+    document.querySelectorAll('section').forEach(section => section.classList.remove("active"));
+    document.querySelector(`#player-section`).classList.add("active");
+
     currentSong = song
     currentTableau = songs
 
