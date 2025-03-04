@@ -39,16 +39,10 @@ const routeur = async () => {
     }else if(hashSplit[0] == "#favorites") {
         setActiveSection("#list");
         setActiveNavLink(hashSplit[0]);
+    }else if(hashSplit[0] == "#search") {
+        setActiveSection("#list");
+        setActiveNavLink(hashSplit[0]);
     }
-    // else if(hashSplit[0] == ""){
-    //     //Refaire avec favorites en bien
-    //     document.querySelectorAll('section').forEach((section) => section.classList.remove("active"));
-    //     document.querySelector(`#home-section`).classList.add("active");
-
-    //     document.querySelectorAll("nav > a").forEach((a) => a.classList.remove("active"));
-    //     document.querySelector(`a[href='#home']`).classList.add("active");
-    // }
-
 }
 
 export default routeur;

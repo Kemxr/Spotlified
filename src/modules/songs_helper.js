@@ -10,6 +10,12 @@ const playerProgress = document.querySelector("#player-progress-bar");
 const playerCurrentTime = document.querySelector("#player-time-current");
 const playerTimeDuration = document.querySelector("#player-time-duration");
 
+const audioPlayer = document.querySelector("#audio-player");
+const playerPlay = document.querySelector("#player-control-play");
+const playerNext = document.querySelector("#player-control-next");
+const playerPrev = document.querySelector("#player-control-previous");
+
+
 const logo = document.querySelector("#logo");
 
 export const displaySongs = async (hash) => {
@@ -129,3 +135,14 @@ export const updateTime = () => {
     playerProgress.value = audio.currentTime;
     playerCurrentTime.textContent = formatTimeStamp(audio.currentTime);
 }
+
+audioPlayer.addEventListener("play",changeIcone);
+audioPlayer.addEventListener("pause",changeIcone);
+playerPlay.addEventListener("click", togglePlayPause);
+playerNext.addEventListener("click", nextSong);
+playerPrev.addEventListener("click", previousSong);
+playerProgress.addEventListener("change", (e) => {
+    clickOnBarProgression(e);
+});
+audioPlayer.addEventListener("durationchange", changeDuration);
+audioPlayer.addEventListener("timeupdate",updateTime);
