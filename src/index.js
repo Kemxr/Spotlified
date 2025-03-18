@@ -64,4 +64,4 @@ window.addEventListener('offline',(e) => document.querySelector("body").classLis
 window.addEventListener('online', (e) => document.querySelector("body").classList.remove("offline"));
 
 navigator.serviceWorker.register("/OneSignalSDKWorker.js");
-console.log("sadsds")
+console.log("Test netlify")
